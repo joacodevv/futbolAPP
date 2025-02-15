@@ -5,10 +5,10 @@ data class JsonResponse(
 )
 
 data class Record(
-    val questions: List<Question>
+    val preguntas: List<Question>
 )
 
 data class Question(
-    val question: String,
-    val answers: List<String>
+    val pregunta: String,
+    val respuestas: List<String>
 )

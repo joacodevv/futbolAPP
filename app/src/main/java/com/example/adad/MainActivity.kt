@@ -49,7 +49,7 @@ fun Screen(questionViewModel: QuestionViewModel ){
                 Text(text = "Questions")
             }
             AnimatedVisibility(visible = isVisible) {
-                questionData.value?.let { Text(it.question) }
+                questionData.value?.let { Text(it.pregunta) }
             }
 
         }
