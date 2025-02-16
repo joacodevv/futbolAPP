@@ -1,8 +1,12 @@
 package com.example.adad
 
 import android.util.Log
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.adad.ui.theme.Correcto
+import com.example.adad.ui.theme.Errado
+import com.example.adad.ui.theme.Gris
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -71,6 +75,46 @@ class QuestionViewModel : ViewModel() {
         }else{
             false
 
+        }
+    }
+
+    fun textFieldBgColor1(answer1: String): Color{
+        when (answer1){
+            questionsData.value?.respuestas?.get(0) -> return Correcto
+            "" -> return Gris
+            else -> return Errado
+        }
+    }
+
+    fun textFieldBgColor2(answer2: String): Color{
+        when (answer2){
+            questionsData.value?.respuestas?.get(1) -> return Correcto
+            "" -> return Gris
+            else -> return Errado
+        }
+    }
+
+    fun textFieldBgColor3(answer3: String): Color{
+        when (answer3){
+            questionsData.value?.respuestas?.get(2) -> return Correcto
+            "" -> return Gris
+            else -> return Errado
+        }
+    }
+
+    fun textFieldBgColor4(answer4: String): Color{
+        when (answer4){
+            questionsData.value?.respuestas?.get(3) -> return Correcto
+            "" -> return Gris
+            else -> return Errado
+        }
+    }
+
+    fun textFieldBgColor5(answer5: String): Color{
+        when (answer5){
+            questionsData.value?.respuestas?.get(4) -> return Correcto
+            "" -> return Gris
+            else -> return Errado
         }
     }
 

@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,6 +24,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.adad.ui.theme.Gris
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +39,7 @@ class MainActivity : ComponentActivity() {
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Screen(questionViewModel: QuestionViewModel) {
 
@@ -46,6 +51,14 @@ fun Screen(questionViewModel: QuestionViewModel) {
     var answer3 by remember { mutableStateOf("") }
     var answer4 by remember { mutableStateOf("") }
     var answer5 by remember { mutableStateOf("") }
+
+    var textFieldBgColor1 by remember { mutableStateOf(Gris) }
+    var textFieldBgColor2 by remember { mutableStateOf(Gris) }
+    var textFieldBgColor3 by remember { mutableStateOf(Gris) }
+    var textFieldBgColor4 by remember { mutableStateOf(Gris) }
+    var textFieldBgColor5 by remember { mutableStateOf(Gris) }
+
+    var nxtLevelBtn by remember { mutableStateOf(false) }
 
 
 
@@ -69,21 +82,40 @@ fun Screen(questionViewModel: QuestionViewModel) {
                 Column {
                     Text(text = questionData.value?.pregunta ?: "")
 
-                    TextField(value = answer1,
+                    TextField(
+                        value = answer1,
                         onValueChange = { answer1 = it },
-                        label = { Text("Answer") })
+                        modifier = Modifier.padding(bottom = 12.dp),
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = textFieldBgColor1
+                        )
+                    )
+
                     TextField(value = answer2,
                         onValueChange = { answer2 = it },
-                        label = { Text("Answer") })
+                        modifier = Modifier.padding(bottom = 12.dp),
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = textFieldBgColor2
+                        ))
+
                     TextField(value = answer3,
                         onValueChange = { answer3 = it },
-                        label = { Text("Answer") })
+                        modifier = Modifier.padding(bottom = 12.dp),
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = textFieldBgColor3
+                        ))
                     TextField(value = answer4,
                         onValueChange = { answer4 = it },
-                        label = { Text("Answer") })
+                        modifier = Modifier.padding(bottom = 12.dp),
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = textFieldBgColor4
+                        ))
                     TextField(value = answer5,
                         onValueChange = { answer5 = it },
-                        label = { Text("Answer") })
+                        modifier = Modifier.padding(bottom = 12.dp),
+                        colors = TextFieldDefaults.textFieldColors(
+                            containerColor = textFieldBgColor5
+                        ))
                     Button(onClick = {
 
                         Log.i(
@@ -102,19 +134,42 @@ fun Screen(questionViewModel: QuestionViewModel) {
                                 questionViewModel.checkAnswer4(answer4),
                                 questionViewModel.checkAnswer5(answer5)
                             )
-                        ) {
+                        ){
+                            //Show next level btn
+                            nxtLevelBtn = true
+                        }
+
+                        textFieldBgColor1 = questionViewModel.textFieldBgColor1(answer1)
+                        textFieldBgColor2 = questionViewModel.textFieldBgColor2(answer2)
+                        textFieldBgColor3 = questionViewModel.textFieldBgColor3(answer3)
+                        textFieldBgColor4 = questionViewModel.textFieldBgColor4(answer4)
+                        textFieldBgColor5 = questionViewModel.textFieldBgColor5(answer5)
+
+
+
+
+
+                         }){
+                        Text(text = "Check Answers")
+                    }
+
+                    AnimatedVisibility(visible = nxtLevelBtn) {
+                        Button(onClick = {
                             questionViewModel.fetchQuestions()
                             answer1 = ""
                             answer2 = ""
                             answer3 = ""
                             answer4 = ""
                             answer5 = ""
+                            textFieldBgColor1 = Gris
+                            textFieldBgColor2 = Gris
+                            textFieldBgColor3 = Gris
+                            textFieldBgColor4 = Gris
+                            textFieldBgColor5 = Gris
+                            nxtLevelBtn = false
+                        }){
+                            Text(text = "Next Level")
                         }
-
-
-                    }) {
-                        Text(text = "Submit")
-                    }
                 }
             }
         }
@@ -138,4 +193,5 @@ fun Screen(questionViewModel: QuestionViewModel) {
 fun callQuestions(viewModel: QuestionViewModel) {
     viewModel.fetchQuestions()
     Log.i("Questions", viewModel.questionsData.value.toString())
+}
 }
