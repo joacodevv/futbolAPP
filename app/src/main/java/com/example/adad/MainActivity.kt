@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         Graph.provide(this)
         enableEdgeToEdge()
-        deleteTodo()
+        //deleteTodo()
         //example()
         setContent {
             Screen(questionViewModel = QuestionViewModel())

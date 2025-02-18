@@ -19,4 +19,7 @@ interface UNDao {
     @Query("DELETE FROM UsedNumbers")
     suspend fun cleanDB()
 
+    @Query("SELECT * FROM UsedNumbers")
+    fun getNumsML(): MutableList<Int>
+
 }

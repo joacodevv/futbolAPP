@@ -8,12 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.adad.ui.theme.Correcto
 import com.example.adad.ui.theme.Errado
 import com.example.adad.ui.theme.Gris
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-
 import kotlinx.coroutines.launch
-
-
 import kotlin.random.Random
 
 class QuestionViewModel(private val repository: Repository = Graph.repository) : ViewModel() {
@@ -21,9 +19,14 @@ class QuestionViewModel(private val repository: Repository = Graph.repository) :
     private val _questionsData = MutableStateFlow<Question?>(null)
     val questionsData: StateFlow<Question?> = _questionsData
 
-    private val usedNumbers = arrayListOf<Int>()
+    private val usedNumbers = mutableListOf<Int>()
 
     private val questionApi = ApiClient.getRetrofit()
+
+    init {
+        uploadNums()
+    }
+
 
 
     fun fetchQuestions() {
@@ -31,10 +34,13 @@ class QuestionViewModel(private val repository: Repository = Graph.repository) :
             try {
                 val num = ranNum()
                 repository.insertNumber(num)
+                Log.i("used", num.toString())
                 val response = questionApi.getQuestions()
                 _questionsData.value = response.record.preguntas[num]
-                usedNumbers.add(num)
-                repository.getNumbers().observeForever { Log.i("usedNumbers", it.joinToString { it.usedNumber.toString() }) }
+                //usedNumbers.add(num)
+                repository.getNumbers().observeForever {
+                    Log.i("usedNumbers", it.joinToString { it.usedNumber.toString() })
+                }
             } catch (e: Exception) {
                 Log.i("quepaso", _questionsData.value.toString())
 
@@ -42,13 +48,23 @@ class QuestionViewModel(private val repository: Repository = Graph.repository) :
         }
     }
 
+    private fun uploadNums(){
+        viewModelScope.launch(Dispatchers.IO) {
+            val numsFromRoom = repository.getNumsML()
+            //Log.i("numsFromRoom", numsFromRoom.toString())
+            usedNumbers.addAll(numsFromRoom)
+        }
+    }
+
     private fun ranNum(): Int {
-        val random = Random.nextInt(1, 12)
+        val random = Random.nextInt(0, 12)
 
         return if (random in usedNumbers) {
             ranNum()
         } else {
-            random
+            usedNumbers.add(random)
+            return random
+
         }
     }
 

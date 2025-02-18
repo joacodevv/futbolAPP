@@ -23,6 +23,10 @@ class Repository(
 
     }
 
+    fun getNumsML(): MutableList<Int> {
+        return unDao.getNumsML()
+    }
+
 
 
 
