@@ -20,7 +20,6 @@ class Repository(
 
     fun getNumbers(): LiveData<List<UNModel>> {
         return unDao.getAllNums()
-
     }
 
     fun getNumsML(): MutableList<Int> {

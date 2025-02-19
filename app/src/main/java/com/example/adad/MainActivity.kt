@@ -252,25 +252,6 @@ fun Screen(questionViewModel: QuestionViewModel) {
                     }
                 }
             }
-
-
-            // AnimatedVisibility(visible = isVisible) {
-            //     Column {
-            //         questionData.value?.let { Text(it.pregunta) }
-            //          questionData.value?.let {
-            //              it.respuestas.forEach {
-            //                  Text(text = it)
-            //             }
-            //        }
-            //     }
-            //}
-
         }
-
-    }
-
-    fun callQuestions(viewModel: QuestionViewModel) {
-        viewModel.fetchQuestions()
-        Log.i("Questions", viewModel.questionsData.value.toString())
     }
 }

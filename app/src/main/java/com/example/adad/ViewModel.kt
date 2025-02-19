@@ -37,7 +37,6 @@ class QuestionViewModel(private val repository: Repository = Graph.repository) :
                 Log.i("used", num.toString())
                 val response = questionApi.getQuestions()
                 _questionsData.value = response.record.preguntas[num]
-                //usedNumbers.add(num)
                 repository.getNumbers().observeForever {
                     Log.i("usedNumbers", it.joinToString { it.usedNumber.toString() })
                 }
@@ -51,7 +50,6 @@ class QuestionViewModel(private val repository: Repository = Graph.repository) :
     private fun uploadNums(){
         viewModelScope.launch(Dispatchers.IO) {
             val numsFromRoom = repository.getNumsML()
-            //Log.i("numsFromRoom", numsFromRoom.toString())
             usedNumbers.addAll(numsFromRoom)
         }
     }
