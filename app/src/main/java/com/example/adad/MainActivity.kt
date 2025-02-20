@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         Graph.provide(this)
         enableEdgeToEdge()
-        //deleteTodo()
+        deleteTodo()
         //example()
         setContent {
             Screen(questionViewModel = QuestionViewModel())
@@ -85,9 +85,17 @@ fun Screen(questionViewModel: QuestionViewModel) {
     var isCorrect4 by remember { mutableStateOf(false) }
     var isCorrect5 by remember { mutableStateOf(false) }
 
-
-
     val maxChar = 20
+
+    fun normalizeAnswers(){
+        answer1 = Normalizer.textNormalizer(answer1)
+        answer2 = Normalizer.textNormalizer(answer2)
+        answer3 = Normalizer.textNormalizer(answer3)
+        answer4 = Normalizer.textNormalizer(answer4)
+        answer5 = Normalizer.textNormalizer(answer5)
+    }
+
+
 
     Box(
         modifier = Modifier
@@ -187,6 +195,8 @@ fun Screen(questionViewModel: QuestionViewModel) {
                         readOnly = isCorrect5
                     )
                     Button(onClick = {
+
+                        normalizeAnswers()
 
                         if (questionViewModel.checkAnswer1(answer1)) {
                             isCorrect1 = true

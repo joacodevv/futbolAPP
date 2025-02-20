@@ -23,6 +23,15 @@ class QuestionViewModel(private val repository: Repository = Graph.repository) :
 
     private val questionApi = ApiClient.getRetrofit()
 
+    private lateinit var correctAnswer1: String
+    private lateinit var correctAnswer2: String
+    private lateinit var correctAnswer3: String
+    private lateinit var correctAnswer4: String
+    private lateinit var correctAnswer5: String
+
+
+
+
     init {
         uploadNums()
     }
@@ -40,6 +49,7 @@ class QuestionViewModel(private val repository: Repository = Graph.repository) :
                 repository.getNumbers().observeForever {
                     Log.i("usedNumbers", it.joinToString { it.usedNumber.toString() })
                 }
+                getCorrectAnswers()
             } catch (e: Exception) {
                 Log.i("quepaso", _questionsData.value.toString())
 
@@ -66,26 +76,44 @@ class QuestionViewModel(private val repository: Repository = Graph.repository) :
         }
     }
 
-    fun checkAnswer1(answer1: String): Boolean {
-        return answer1 == questionsData.value?.respuestas?.get(0)?.lowercase()
+    private fun getCorrectAnswers(){
+        correctAnswer1 = questionsData.value?.respuestas?.get(0)?.lowercase() ?: ""
+        correctAnswer2 = questionsData.value?.respuestas?.get(1)?.lowercase() ?: ""
+        correctAnswer3 = questionsData.value?.respuestas?.get(2)?.lowercase() ?: ""
+        correctAnswer4 = questionsData.value?.respuestas?.get(3)?.lowercase() ?: ""
+        correctAnswer5 = questionsData.value?.respuestas?.get(4)?.lowercase() ?: ""
+        normalizeCorrectAnswers()
     }
 
-    fun checkAnswer2(answer2: String): Boolean {
-        return answer2 == questionsData.value?.respuestas?.get(1)?.lowercase()
-    }
-
-    fun checkAnswer3(answer3: String): Boolean {
-        return answer3 == questionsData.value?.respuestas?.get(2)?.lowercase()
-
-    }
-
-    fun checkAnswer4(answer4: String): Boolean {
-        return answer4 == questionsData.value?.respuestas?.get(3)?.lowercase()
+    private fun normalizeCorrectAnswers(){
+        correctAnswer1 = Normalizer.textNormalizer(correctAnswer1)
+        correctAnswer2 = Normalizer.textNormalizer(correctAnswer2)
+        correctAnswer3 = Normalizer.textNormalizer(correctAnswer3)
+        correctAnswer4 = Normalizer.textNormalizer(correctAnswer4)
+        correctAnswer5 = Normalizer.textNormalizer(correctAnswer5)
 
     }
 
-    fun checkAnswer5(answer5: String): Boolean {
-        return answer5 == questionsData.value?.respuestas?.get(4)?.lowercase()
+    fun checkAnswer1(_answer1: String): Boolean {
+        return _answer1 == correctAnswer1
+    }
+
+    fun checkAnswer2(_answer2: String): Boolean {
+        return _answer2 == correctAnswer2
+    }
+
+    fun checkAnswer3(_answer3: String): Boolean {
+        return _answer3 == correctAnswer3
+
+    }
+
+    fun checkAnswer4(_answer4: String): Boolean {
+        return _answer4 == correctAnswer4
+
+    }
+
+    fun checkAnswer5(_answer5: String): Boolean {
+        return _answer5 == correctAnswer5
 
     }
 
@@ -100,9 +128,9 @@ class QuestionViewModel(private val repository: Repository = Graph.repository) :
         }
     }
 
-    fun textFieldBgColor1(answer1: String): Color {
-        when (answer1) {
-            questionsData.value?.respuestas?.get(0)?.lowercase() -> return Correcto
+    fun textFieldBgColor1(_answer1: String): Color {
+        when (_answer1) {
+            correctAnswer1 -> return Correcto
             "" -> return Gris
             else -> return Errado
         }
@@ -110,7 +138,7 @@ class QuestionViewModel(private val repository: Repository = Graph.repository) :
 
     fun textFieldBgColor2(answer2: String): Color {
         when (answer2) {
-            questionsData.value?.respuestas?.get(1)?.lowercase() -> return Correcto
+            correctAnswer2 -> return Correcto
             "" -> return Gris
             else -> return Errado
         }
@@ -118,7 +146,7 @@ class QuestionViewModel(private val repository: Repository = Graph.repository) :
 
     fun textFieldBgColor3(answer3: String): Color {
         when (answer3) {
-            questionsData.value?.respuestas?.get(2)?.lowercase() -> return Correcto
+            correctAnswer3 -> return Correcto
             "" -> return Gris
             else -> return Errado
         }
@@ -126,7 +154,7 @@ class QuestionViewModel(private val repository: Repository = Graph.repository) :
 
     fun textFieldBgColor4(answer4: String): Color {
         when (answer4) {
-            questionsData.value?.respuestas?.get(3)?.lowercase() -> return Correcto
+            correctAnswer4 -> return Correcto
             "" -> return Gris
             else -> return Errado
         }
@@ -134,7 +162,7 @@ class QuestionViewModel(private val repository: Repository = Graph.repository) :
 
     fun textFieldBgColor5(answer5: String): Color {
         when (answer5) {
-            questionsData.value?.respuestas?.get(4)?.lowercase() -> return Correcto
+            correctAnswer5 -> return Correcto
             "" -> return Gris
             else -> return Errado
         }
