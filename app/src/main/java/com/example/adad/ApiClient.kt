@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 interface ApiClient {
-    @GET("67abac6fad19ca34f8ffbec6")
+    @GET("67b7c840acd3cb34a8ea6804")
 
     suspend fun getQuestions(): JsonResponse
 

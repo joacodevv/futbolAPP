@@ -65,7 +65,7 @@ class QuestionViewModel(private val repository: Repository = Graph.repository) :
     }
 
     private fun ranNum(): Int {
-        val random = Random.nextInt(0, 12)
+        val random = Random.nextInt(0, 68)
 
         return if (random in usedNumbers) {
             ranNum()
